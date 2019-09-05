@@ -74,7 +74,7 @@ class WhatsAppController {
             this.getForm().forEach((value, key)=>{
                 json[key] = value;
             });
-            
+
             return json;
         }
     }
@@ -206,9 +206,43 @@ class WhatsAppController {
         this.el.btnFinishMicrophone.on('click', e=>{
             this.closeRecordMicrophone();
         });
+
+        this.el.inputText.on('keypress', e=>{
+            if(e.key === 'Enter' && !e.ctrlKey){
+                e.preventDefault();
+                this.el.btnSend.click();
+            }
+        });
+
+        this.el.inputText.on('keyup', e=>{
+            if(this.el.inputText.innerHTML.length){
+                this.el.inputPlaceholder.hide();
+                this.el.btnSendMicrophone.hide();
+                this.el.btnSend.show();
+            } else {
+                this.el.inputPlaceholder.show();
+                this.el.btnSendMicrophone.show();
+                this.el.btnSend.hide();
+            }
+        });
+
+        this.el.btnSend.on('click', e=>{
+            console.log(this.el.inputText.innerHTML);
+        });
+
+        this.el.btnEmojis.on('click', e=>{
+            this.el.panelEmojis.toggleClass('open');
+        });
+
+        this.el.panelEmojis.querySelectorAll('.emojik').forEach(emoji=>{
+            emoji.on('click', e=>{
+                console.log(emoji.dataset.unicode);
+            });
+        });
     }
 
     startRecordMicrophoneTime(){
+        
         let start = Date.now();
         this._recordMicrophoneInterval = setInterval(()=>{
             this.el.recordMicrophoneTimer.innerHTML = Format.toTime((Date.now() - start));
@@ -216,6 +250,7 @@ class WhatsAppController {
     }
 
     closeRecordMicrophone(){
+
         this.el.recordMicrophone.hide();
         this.el.btnSendMicrophone.show();
         clearInterval(this._recordMicrophoneInterval);

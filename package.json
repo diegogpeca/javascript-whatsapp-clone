@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/diegogpeca/javascript-whatsapp-clone#readme",
   "dependencies": {
+    "pdfjs-dist": "^2.1.266",
     "webpack": "^3.1.0",
-    "webpack-dev-server": "^2.5.1"
+    "webpack-dev-server": "^2.11.5"
   }
 }

@@ -8,10 +8,24 @@ export class WhatsAppController {
 
     constructor(){
 
+        this._firebase = new Firebase();
+        this.initAuth();
         this.elementsPrototype();
         this.loadElements();
         this.initEvents();
-        this._firebase = new Firebase();
+        
+    }
+
+    initAuth(){
+
+        this._firebase.initAuth().then(response=>{
+            this._user = response.user;
+            this.el.appContent.css({
+                display:'flex'
+            });
+        }).catch(err=>{
+            console.error(err);
+        })
     }
 
     loadElements(){
@@ -226,12 +240,13 @@ export class WhatsAppController {
 
                 }).catch(err=>{
                     this.el.panelDocumentPreview.css({
-                        'height':'calc(100% - 70px)'
+                        'height':'calc(100% - 70px)'                        
                     });
-
+                    
                     switch (file.type){
                         case 'application/vnd.ms-excel':
                         case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                        case 'application/vnd.ms-excel.sheet.macroEnabled.12':
                             this.el.iconPanelDocumentPreview.className = 'jcxhw icon-doc-xls';
                             break;
                         

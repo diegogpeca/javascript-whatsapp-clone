@@ -1,5 +1,7 @@
-const firebase = require('firebase');
+const firebase = require('firebase/app');
+require('firebase/auth');
 require('firebase/firestore');
+require('firebase/database');
 
 export class Firebase {
 
@@ -35,5 +37,22 @@ export class Firebase {
     static hd (){
 
         return firebase.storage();
+    }
+
+    initAuth(){
+        return new Promise((s, f)=>{
+            let provider = new firebase.auth.GoogleAuthProvider();
+            provider.addScope('https://www.googleapis.com/auth/plus.login');
+            firebase.auth().signInWithPopup(provider).then(result=>{
+                let token = result.credential.accessToken;
+                let user = result.user;
+                s({
+                    user, 
+                    token
+                });
+            }).catch(err => {
+                f(err);
+            });
+        });
     }
 }

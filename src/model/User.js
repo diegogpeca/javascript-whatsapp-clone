@@ -34,13 +34,18 @@ export class User extends Model{
         return User.findByEmail(this.email).set(this.toJSON());
     }
     
-    static gerRef(){
+    static getRef(){
 
         return Firebase.db().collection('/users');
     }
 
     static findByEmail(email){
 
-        return User.gerRef().doc(email);
+        return User.getRef().doc(email);
+    }
+
+    addContact(contact){
+
+       return User.getRef().doc(this.email).collection('contacts').doc(btoa(contact.email)).set(contact.toJSON());
     }
 }
